@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+# input a target url
+target=$1
+
+# search from all files in local directory
+
+
+page_text=$(curl -s $target)
+
+
+echo "-----------------------------"
+echo " <meta tag from web page: "
+echo "-----------------------------"
+
+echo $page_text | html2text -utf8 -unparse | awk '/<META/,/>/'
+
+
+echo "-----------------------------"
+echo " <a tag from web page: "
+echo "-----------------------------"
+
+
+echo $page_text | html2text -utf8 -unparse | awk '/<A/,/A>/' | grep href
+
+
+echo "-----------------------------"
+echo " <script tag from web page: "
+echo "-----------------------------"
+
+
+echo $page_text | html2text -utf8 -unparse | awk '/<SCRIPT/,/<\/SCRIPT>/'
