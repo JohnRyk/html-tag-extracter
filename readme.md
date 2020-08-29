@@ -1,8 +1,8 @@
 
 # HTML Tag extractor
-
-TO extract html tags from a giving URL or HTML page file.
-
+```
+TO extract html tags from a giving URL or HTML page files.
+```
 
 ## Usage:
 
