@@ -6,16 +6,19 @@ TO extract html tags from a giving URL or HTML page file.
 
 ## Usage:
 
+```shell
   extractor <URL>
   extractor -f <FileName>
   extractor -d <DirectoryName>
+```
 
 ## Ex:
 
+```shell
   extractor -d ./all_html_files
   
-  or
+  # Same as:
   
   cd ./all_html_files
   extractor -d .
-  
+```  
