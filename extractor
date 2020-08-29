@@ -1,0 +1,62 @@
+#!/bin/bash
+
+function print_Title(){
+	echo -ne "\033[32m"
+	echo "-----------------------------"
+	echo $1
+	echo "-----------------------------"
+	echo -ne "\033[0m"
+}
+
+function input_Error(){
+	echo -ne "\033[31m"
+	echo "[-] Parameter error !"
+	echo -e "\033[0m"
+	exit
+}
+
+function extract_Tags(){
+	print_Title " <meta tag from web page: "
+	echo $page_text | html2text -utf8 -unparse | awk '/<META/,/>/'
+
+	print_Title " <a tag from web page: "
+	echo $page_text | html2text -utf8 -unparse | awk '/<A/,/A>/' | grep href
+
+	print_Title " <input tag from web page: "
+	echo $page_text | html2text -utf8 -unparse | awk '/<INPUT/,/>/' 
+
+	print_Title " <script tag from web page: "
+	echo $page_text | html2text -utf8 -unparse | awk '/<SCRIPT/,/<\/SCRIPT>/'
+
+	print_Title " <!-- comment tag from web page: "
+	cat $1 | egrep -o '<!--.*-->'
+}
+
+if [ "$#" -lt 2 ];then
+	input_Error
+fi
+
+if [ "$1" == "-f" ] && [ "$2" != "" ];then
+	# Specify a html file
+	page_text=`cat $2`
+	extract_Tags $2
+elif [ "$1" == "-d" ] && [ $(test -d $2;echo $?) -eq 0 ];then
+	# Specify a directory
+	for file in `ls $2`
+	do
+		if [ -f "$file" ];then
+			echo -ne "\033[33m"
+			printf "\n[+] Extracting HTML tags from file: %s\n" "$file"
+			echo -ne "\033[0m"
+			page_text=$(cat $file)
+			extract_Tags
+		fi
+	done
+elif [ "$#" -eq 1 ];then
+	# Give a target url
+	target=$1
+	page_text=$(curl -s -k $target)
+	extract_Tags
+else
+	input_Error
+fi
