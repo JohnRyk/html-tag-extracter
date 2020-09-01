@@ -32,7 +32,7 @@ function extract_Tags(){
 	cat $1 | egrep -o '<!--.*-->'
 }
 
-if [ "$#" -lt 2 ];then
+if [ "$#" -gt 2 ];then
 	input_Error
 fi
 
