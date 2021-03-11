@@ -29,7 +29,7 @@ function extract_Tags(){
 	echo $page_text | html2text -utf8 -unparse | awk '/<SCRIPT/,/<\/SCRIPT>/'
 
 	print_Title " <!-- comment tag from web page: "
-	echo $page_text | awk '/<!--/,/-->/'
+	echo $page_text | grep -oPz '<!--.*?-->' --color
 }
 
 if [ "$#" -gt 2 ];then
